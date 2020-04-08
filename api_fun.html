@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Movie Database</title>
+	<meta charset = "utf-8"/>
+
+	<style type="text/css">
+		
+		html, body {
+			font-size : 20px;
+			font-family : 'Comic Sans MS';
+			text-align : center;
+			background: #FF7F50;
+		}
+
+		h1, h2{
+			background-color: #808080;
+		}
+
+	</style>
+
+	<script type="text/javascript">
+		
+
+		function getMovie()
+		{
+			request = new XMLHttpRequest();
+			console.log("1- request object created");
+
+			request.open("GET", "http://www.omdbapi.com/?i=tt2674426&apikey=1dac3971", true);
+
+			console.log("2 - opened request file");
+
+			request.onreadystatechange = function () {
+
+				console.log ("3 - readystatechange event fired.");
+
+				if(request.readyState == 4 && request.status == 200){
+					result = request.responseText; // returns as JSON
+
+					alert(result);
+
+					movies = JSON.parse(result);
+
+					str = "";
+					str += "<b>Title: </b>" + movies.Title + " <br>";
+					str += "<b>Released: </b>" + movies.Year + " <br>";
+					str += "<b>Genre: </b>" + movies.Genre + " <br>";
+					str += "<b>Director: </b>" + movies.Director + " <br>";
+					str += "<b>Writer: </b>" + movies.Writer + " <br>";
+					str += "<b>Actors: </b>" + movies.Actors + " <br>";
+					str += "<b>Plot: </b>" + movies.Plot + " <br>";
+
+
+
+					document.getElementById("data").innerHTML = str;
+
+					movie = JSON.parse(result);
+
+					// print all the details
+
+				}
+				else if (request.readyState == 4 && request.status != 200){
+					document.getElementById("data").innerHTML = 
+						"Something is wrong, Make sure you have the right title"
+				}
+
+				else if(request.readyState == 3){
+					document.getElementById("data").innerHTML = "Too soon! Try again";
+				}
+
+			}
+
+			request.send();
+			console.log("4 - Request sent");
+		}
+
+	</script>
+</head>
+<body onload = "getMovie()">
+
+	<h1> Movie </h1>
+	<div id = "data"> </div>
+
+	<h2> About Movie Database </h2>
+
+	<div id = "info">
+
+		<p>
+
+			<b> API description: </b> This API returns information from a <a href = "https://www.omdbapi.com" target = "_blank"/> database </a> on any movie given the title of the movie or the IMDB id of the movie. <br /> <br />
+
+			<b> API Request Options: </b> GET <br />
+
+			<b> Useful Applications: </b> <br />
+					1. Corona season people keep sane by watching movies, this API gives them a quick summary of any movie they want to watch. <br />
+					2.  Readily abailable information
+
+		</p>
+
+	</div>
+
+</body>
+</html>
